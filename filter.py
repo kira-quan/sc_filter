@@ -1,3 +1,12 @@
+"""
+A filter file for the Sandy dataset
+
+Currently:
+- Removes RT, MT
+- Replaces user mentions and urls in tweet text
+- Condenses JSON to the following fields: id, coordinates, created_at, user.id, user.screen_name, text
+"""
+
 import json
 import re
 import sys
