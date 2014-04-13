@@ -49,6 +49,7 @@ def process_file(input_filename, output_filename):
 			tweet_output = process_tweet(line)
 			if tweet_output is not None:
 				json.dump(tweet_output, outfile)
+				outfile.write('\n')
 
 		infile.close()
 
