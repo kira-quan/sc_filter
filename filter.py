@@ -32,7 +32,7 @@ def process_tweet(input_tweet):
 	tweet_text = re.sub(r"(?P<url>https?://[^\s]+)", "<url>", tweet_text)
 
 	# Create a smaller JSON object with desired fields
-	output_tweet = [{'id': tweet_json['id'], 'coordinates': tweet_coords, 'created_at': tweet_json['created_at'], 'user': {'id': tweet_json['user']['id'], 'screen_name': tweet_json['user']['screen_name']}, 'text': tweet_text}]
+	output_tweet = {'id': tweet_json['id'], 'coordinates': tweet_coords, 'created_at': tweet_json['created_at'], 'user': {'id': tweet_json['user']['id'], 'screen_name': tweet_json['user']['screen_name']}, 'text': tweet_text}
 
 	return output_tweet
 
