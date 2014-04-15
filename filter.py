@@ -3,8 +3,8 @@ A filter file for the Sandy dataset
 
 Currently:
 - Removes RT, MT
-- Replaces user mentions and urls in tweet text
 - Removes tweets that do not have a specific set of hashtags. 
+- Replaces user mentions and urls in tweet text
 - Condenses JSON to the following fields: id, coordinates, created_at, user.id, user.screen_name, text
 """
 
@@ -20,6 +20,15 @@ def process_tweet(input_tweet):
 	if (tweet_json['retweeted'] is True) or ("RT" in tweet_text) or ("MT" in tweet_text):
 		return None
 
+	# Remove tweets that do not have a desired hashtag
+	tweet_hashs = str(tweet_json.get('entities').get('hashtags')).lower()
+	
+	if (("sandy" not in tweet_hashs) and ("hurricanesandy" not in tweet_hashs) and ("frankenstorm" not in tweet_hashs) and ("nyc" not in tweet_hashs) and ("hurricane" not in tweet_hashs)
+	and ("storm" not in tweet_hashs) and ("fall" not in tweet_hashs) and ("sandyde" not in tweet_hashs) and ("sandynj" not in tweet_hashs) 
+	and ("sandyabc7" not in tweet_hashs) and ("njsandy" not in tweet_hashs) and ("stormde" not in tweet_hashs) and ("weather" not in tweet_hashs)
+	and ("breaking" not in tweet_hashs) and ("irene" not in tweet_hashs) and ("mittstormtips" not in tweet_hashs) and ("perfectstorm" not in tweet_hashs)):
+		return None
+		
 	# Coordinate Check
 	if tweet_json.get('coordinates') is not None:
 		tweet_coords = tweet_json.get('coordinates').get('coordinates')
@@ -31,15 +40,6 @@ def process_tweet(input_tweet):
 	# Replace usernames and urls
 	tweet_text = re.sub(r"(?<=^|(?<=[^a-zA-Z0-9-_\.]))@([A-Za-z]+[A-Za-z0-9]+)", "<user>", tweet_text)
 	tweet_text = re.sub(r"(?P<url>https?://[^\s]+)", "<url>", tweet_text)
-
-	# Remove tweets that do not have a desired hashtag
-	tweet_hashs = str(tweet_json.get('entities').get('hashtags')).lower()
-	
-	if (("sandy" not in tweet_hashs) and ("hurricanesandy" not in tweet_hashs) and ("frankenstorm" not in tweet_hashs) and ("nyc" not in tweet_hashs) and ("hurricane" not in tweet_hashs)
-	and ("storm" not in tweet_hashs) and ("fall" not in tweet_hashs) and ("sandyde" not in tweet_hashs) and ("sandynj" not in tweet_hashs) 
-	and ("sandyabc7" not in tweet_hashs) and ("njsandy" not in tweet_hashs) and ("stormde" not in tweet_hashs) and ("weather" not in tweet_hashs)
-	and ("breaking" not in tweet_hashs) and ("irene" not in tweet_hashs) and ("mittstormtips" not in tweet_hashs) and ("perfectstorm" not in tweet_hashs)):
-		return None
 		
 	# Create a smaller JSON object with desired fields
 	output_tweet = {'id': tweet_json['id'], 'coordinates': tweet_coords, 'created_at': tweet_json['created_at'], 'user': {'id': tweet_json['user']['id'], 'screen_name': tweet_json['user']['screen_name']}, 'text': tweet_text}
