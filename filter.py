@@ -19,7 +19,13 @@ def process_tweet(input_tweet):
 	tweet_text = tweet_json['text']
 	if (tweet_json['retweeted'] is True) or ("RT" in tweet_text) or ("MT" in tweet_text):
 		return None
-
+	
+	# Remove non-english tweets
+	if ("en" not in tweet_json['lang']):
+		print("Not English!" , tweet_json['lang'])
+		return None
+		
+	'''
 	# Remove tweets that do not have a desired hashtag
 	tweet_hashs = str(tweet_json.get('entities').get('hashtags')).lower()
 	
@@ -28,6 +34,7 @@ def process_tweet(input_tweet):
 	and ("sandyabc7" not in tweet_hashs) and ("njsandy" not in tweet_hashs) and ("stormde" not in tweet_hashs) and ("weather" not in tweet_hashs)
 	and ("breaking" not in tweet_hashs) and ("irene" not in tweet_hashs) and ("mittstormtips" not in tweet_hashs) and ("perfectstorm" not in tweet_hashs)):
 		return None
+	'''
 		
 	# Coordinate Check
 	if tweet_json.get('coordinates') is not None:
